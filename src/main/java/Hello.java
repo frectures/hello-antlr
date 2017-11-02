@@ -11,6 +11,15 @@ public class Hello {
 		ExpressionsParser parser = new ExpressionsParser(tokens);
 		ExpressionsParser.ExpressionContext expression = parser.expression();
 
-		System.out.println(expression);
+		MyVisitor visitor = new MyVisitor();
+		visitor.visit(expression);
+	}
+}
+
+class MyVisitor extends ExpressionsBaseVisitor<Void> {
+	@Override
+	public Void visitExpression(ExpressionsParser.ExpressionContext ctx) {
+		System.out.println("visit " + ctx.getText());
+		return super.visitExpression(ctx);
 	}
 }
