@@ -7,10 +7,11 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import delphi.ExpressionsParser.BinaryContext;
 import delphi.ExpressionsParser.NegateContext;
 import delphi.ExpressionsParser.NumberContext;
+import delphi.ExpressionsParser.ParenthesizedContext;
 
 public class Hello {
 	public static void main(String[] args) {
-		CodePointCharStream stream = CharStreams.fromString("2*3+4*-5");
+		CodePointCharStream stream = CharStreams.fromString("(1+2)*(3+4)");
 
 		ExpressionsLexer lexer = new ExpressionsLexer(stream);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -52,5 +53,10 @@ class MyVisitor extends ExpressionsBaseVisitor<Double> {
 			return left / right;
 		}
 		throw new AssertionError(ctx.toString());
+	}
+
+	@Override
+	public Double visitParenthesized(ParenthesizedContext ctx) {
+		return ctx.getChild(1).accept(this);
 	}
 }

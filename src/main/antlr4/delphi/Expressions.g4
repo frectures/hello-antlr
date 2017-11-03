@@ -4,6 +4,7 @@ start : expression EOF ;
 
 expression
 : NUMBER                              # number
+| '(' expression ')'                  # parenthesized
 | '-' expression                      # negate
 | expression ('*' | '/') expression   # binary
 | expression ('+' | '-') expression   # binary
