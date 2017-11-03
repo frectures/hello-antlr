@@ -3,12 +3,14 @@ package delphi;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import delphi.ExpressionsParser.ExpressionContext;
+import delphi.ExpressionsParser.ParExpressionContext;
 
 public class Hello {
 	public static void main(String[] args) {
-		CodePointCharStream stream = CharStreams.fromString("-5 + -2 - ------------3");
+		CodePointCharStream stream = CharStreams.fromString("(42)");
 
 		ExpressionsLexer lexer = new ExpressionsLexer(stream);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -24,7 +26,6 @@ public class Hello {
 class MyVisitor extends ExpressionsBaseVisitor<Double> {
 	@Override
 	public Double visitExpression(ExpressionContext ctx) {
-		visitChildren(ctx);
 		// TODO Geht das nicht auch anders, als die Kinder zu zählen?
 		int childCount = ctx.getChildCount();
 		if (childCount == 1) {
@@ -49,5 +50,12 @@ class MyVisitor extends ExpressionsBaseVisitor<Double> {
 			}
 		}
 		throw new AssertionError(ctx.toString());
+	}
+
+	@Override
+	public Double visitParExpression(ParExpressionContext ctx) {
+		ParseTree child = ctx.getChild(1);
+		System.out.println(child.getText());
+		return child.accept(this);
 	}
 }
