@@ -8,7 +8,7 @@ import delphi.ExpressionsParser.ExpressionContext;
 
 public class Hello {
 	public static void main(String[] args) {
-		CodePointCharStream stream = CharStreams.fromString("2 + 3 * 4");
+		CodePointCharStream stream = CharStreams.fromString("20*5/5*2");
 
 		ExpressionsLexer lexer = new ExpressionsLexer(stream);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -40,6 +40,8 @@ class MyVisitor extends ExpressionsBaseVisitor<Double> {
 				return left + right;
 			case "*":
 				return left * right;
+			case "/":
+				return left / right;
 			}
 		}
 		throw new AssertionError(ctx.toString());
