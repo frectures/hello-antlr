@@ -2,13 +2,12 @@ grammar Expressions;
 
 start : expression EOF ;
 
-expression : NUMBER
-| parExpression
-| '-' expression
-| expression ('*' | '/') expression
-| expression ('+' | '-') expression ;
-
-parExpression : '(' expression ')' ;
+expression
+: NUMBER                              # number
+| '-' expression                      # negate
+| expression ('*' | '/') expression   # binary
+| expression ('+' | '-') expression   # binary
+;
 
 NUMBER : [0-9]+ ;
 
