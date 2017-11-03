@@ -27,20 +27,20 @@ public class Hello {
 class MyVisitor extends ExpressionsBaseVisitor<Double> {
 	@Override
 	public Double visitNumber(NumberContext ctx) {
-		String number = ctx.getChild(0).getText();
+		String number = ctx.NUMBER().getText();
 		return Double.valueOf(number);
 	}
 
 	@Override
 	public Double visitNegate(NegateContext ctx) {
-		return -ctx.getChild(1).accept(this);
+		return -ctx.expression().accept(this);
 	}
 
 	@Override
 	public Double visitBinary(BinaryContext ctx) {
-		Double left = ctx.getChild(0).accept(this);
-		String operator = ctx.getChild(1).getText();
-		Double right = ctx.getChild(2).accept(this);
+		Double left = ctx.left.accept(this);
+		String operator = ctx.operator.getText();
+		Double right = ctx.right.accept(this);
 
 		switch (operator) {
 		case "+":
@@ -57,6 +57,6 @@ class MyVisitor extends ExpressionsBaseVisitor<Double> {
 
 	@Override
 	public Double visitParenthesized(ParenthesizedContext ctx) {
-		return ctx.getChild(1).accept(this);
+		return ctx.expression().accept(this);
 	}
 }
